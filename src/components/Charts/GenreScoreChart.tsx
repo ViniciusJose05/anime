@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { animeAPI, StudioScore } from '../../services/api';
+import { animeAPI, GenreScore } from '../../services/api';
 
-const StudioChart: React.FC = () => {
-  const [data, setData] = useState<StudioScore[]>([]);
+const GenreScoreChart: React.FC = () => {
+  const [data, setData] = useState<GenreScore[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const studioData = await animeAPI.getStudioScores();
-        setData(studioData);
+        const scoreData = await animeAPI.getGenreScores();
+        setData(scoreData);
         setLoading(false);
       } catch (err) {
-        setError('Erro ao carregar dados de estúdios');
+        setError('Erro ao carregar dados de notas por gênero');
         setLoading(false);
       }
     };
@@ -25,7 +25,7 @@ const StudioChart: React.FC = () => {
   if (loading) {
     return (
       <div className="chart-container">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">Estúdios com Melhores Notas</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">Nota Média por Gênero</h3>
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
         </div>
@@ -36,7 +36,7 @@ const StudioChart: React.FC = () => {
   if (error) {
     return (
       <div className="chart-container">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">Estúdios com Melhores Notas</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">Nota Média por Gênero</h3>
         <div className="flex items-center justify-center h-64 text-red-500">
           {error}
         </div>
@@ -46,30 +46,27 @@ const StudioChart: React.FC = () => {
 
   return (
     <div className="chart-container">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">Estúdios com Melhores Notas</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-4">Nota Média por Gênero</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data} layout="horizontal">
+        <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" domain={[6.5, 8.5]} />
-          <YAxis 
-            dataKey="studio" 
-            type="category"
-            width={120}
+          <XAxis 
+            dataKey="genre" 
+            angle={-45}
+            textAnchor="end"
+            height={80}
             fontSize={12}
           />
+          <YAxis domain={[6, 8]} />
           <Tooltip 
-            formatter={(value, name) => {
-              if (name === 'average_score') return [Number(value).toFixed(2), 'Nota Média'];
-              if (name === 'count') return [value, 'Quantidade'];
-              return [value, name];
-            }}
-            labelFormatter={(label) => `Estúdio: ${label}`}
+            formatter={(value) => [Number(value).toFixed(2), 'Nota Média']}
+            labelFormatter={(label) => `Gênero: ${label}`}
           />
-          <Bar dataKey="average_score" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
+          <Bar dataKey="average_score" fill="#10b981" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-export default StudioChart;
+export default GenreScoreChart;

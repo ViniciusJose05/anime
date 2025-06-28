@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { BarChart3, PieChart, TrendingUp, Users, Brain, Database } from 'lucide-react';
-import GenreChart from '../Charts/GenreChart';
-import RatingChart from '../Charts/RatingChart';
+import { BarChart3, PieChart, TrendingUp, Users, Brain, Database, AlertCircle } from 'lucide-react';
+import GenreFrequencyChart from '../Charts/GenreFrequencyChart';
+import GenreScoreChart from '../Charts/GenreScoreChart';
 import PopularityChart from '../Charts/PopularityChart';
 import StudioChart from '../Charts/StudioChart';
 import YearChart from '../Charts/YearChart';
@@ -32,16 +32,28 @@ const Dashboard: React.FC = () => {
             <div className="flex items-center space-x-4 text-sm text-gray-600">
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-1" />
-                <span>Dataset: Kaggle Anime</span>
+                <span>Dataset: Kaggle Anime 2020</span>
               </div>
               <div className="flex items-center">
                 <TrendingUp className="w-4 h-4 mr-1" />
-                <span>Modelo: KNN</span>
+                <span>Modelo: KNN (k=5)</span>
               </div>
             </div>
           </div>
         </div>
       </header>
+
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center">
+            <AlertCircle className="w-5 h-5 text-yellow-400 mr-2" />
+            <p className="text-yellow-700">
+              <strong>Importante:</strong> Para usar a funcionalidade de predição, execute o backend Flask: 
+              <code className="bg-yellow-200 px-2 py-1 rounded ml-2">python backend/app.py</code>
+            </p>
+          </div>
+        </div>
+      </div>
 
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,8 +83,8 @@ const Dashboard: React.FC = () => {
         {activeTab === 'overview' && (
           <div className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <GenreChart />
-              <RatingChart />
+              <GenreFrequencyChart />
+              <GenreScoreChart />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -98,7 +110,10 @@ const Dashboard: React.FC = () => {
           <div className="text-center text-gray-600">
             <p className="mb-2">Dashboard desenvolvido para análise de dados de anime</p>
             <p className="text-sm">
-              Dados baseados no dataset do Kaggle • Modelo KNN para predição de notas
+              Dados baseados no dataset Kaggle Anime Recommendation Database 2020 • Modelo KNN para predição de notas
+            </p>
+            <p className="text-xs mt-2 opacity-75">
+              Desenvolvido por: Maria Júlia Silva Fonseca Guedes Nobre & Vinícius José Aragão de Almeida Barrozo
             </p>
           </div>
         </div>
